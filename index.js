@@ -33,36 +33,50 @@ const planetFetch = (url) => fetch(url)
   .then(homeworld => fetchNPush(homeworld))
 
 
-  const filmsFetch = (url) => fetch(url)
-  .then(response => response.json())
-  .then(person => person.films)
+// const filmsFetch = (url) => fetch(url)
+//   .then(response => response.json())
+//   .then(person => person.films)
 
-  // const makeFilms = function(cb){
-  // Promise.all(cb)
-  //     .then((film) => {
-  //       console.log(film)
-  //       //   film.forEach(film => fetch(film)
-  //       //     .then(film => film.json())
-  //       //     .then(film => data.push(film.title))
-  //       //     // .then(() => console.log(data))
-  //       // )}
-  //     // )
-  //     })
+// const makeilms = function(cb){
+let filmFetch = (film) => {
+  fetch(film)
+  .then(film => film.json())
+  .then(film => data.push(film.title))
+}
 
-  //   }
 const filmsFetch = (url) => fetch(url)
   .then(response => response.json())
   .then(person => person.films)
-  .then(filmsArray => Promise.all(filmsArray)
-      .then((film) => {
-          film.forEach(film => fetch(film)
-            .then(film => film.json())
-            .then(film => data.push(film.title))
-            .then(() => console.log(data))
-        )}
-      ))
-  .then(() => console.log(data))
-  .catch(err => err, "this stopped because");
+  .then(person => console.log(person, '50'))
+  .then(filmsArray => filmsArray.forEach(film => {
+    filmFetch(film)
+  }));
+
+
+
+  //  .then Promise.all(filmsArray)
+  //     .then((film) => {
+  //         film.forEach(film => fetch(film)
+  //           .then(film => film.json())
+  //           .then(film => data.push(film.title))
+  //           .then(() => console.log(data))
+  //       )}
+  //     ))
+  // .then(() => console.log(data))
+  // .catch(err => err, "this stopped because");
+
+  // Promise.all(cb)
+  //     .then((film) => {
+  //       console.log(film)
+  //         film.forEach(film => fetch(film)
+  //           .then(film => film.json())
+  //           .then(film => data.push(film.title))
+  //           // .then(() => console.log(data))
+  //       )}
+  //     )
+      // })
+
+  //   }
 
 let fileContents = ''
 
@@ -77,13 +91,23 @@ fileContents = `My name is ${name} and I am from ${planet}.
 I starred in the following films: ${films}`
 }
 
-const masterFunc = new Promise (characterFetch(url))
+// const masterFunc = new Promise (characterFetch(url))
+//   .then(() => planetFetch(url))
+//   .then(() => filmsFetch(url))
+//   // .then((cb) => makeFilms(cb))
+//   // .then(() => console.log(data))
+//   .then(() => SetData(data))
+//   .then(() => console.log(fileContents))
+
+const masterFunc = (url) => {
+  characterFetch(url)
   .then(() => planetFetch(url))
   .then(() => filmsFetch(url))
-  .then((cb) => makeFilms(cb))
+  // .then((cb) => makeFilms(cb))
   // .then(() => console.log(data))
   .then(() => SetData(data))
   .then(() => console.log(fileContents))
+}
 
 
 masterFunc(url);
