@@ -33,7 +33,23 @@ const planetFetch = (url) => fetch(url)
   .then(homeworld => fetchNPush(homeworld))
 
 
+  const filmsFetch = (url) => fetch(url)
+  .then(response => response.json())
+  .then(person => person.films)
 
+  // const makeFilms = function(cb){
+  // Promise.all(cb)
+  //     .then((film) => {
+  //       console.log(film)
+  //       //   film.forEach(film => fetch(film)
+  //       //     .then(film => film.json())
+  //       //     .then(film => data.push(film.title))
+  //       //     // .then(() => console.log(data))
+  //       // )}
+  //     // )
+  //     })
+
+  //   }
 const filmsFetch = (url) => fetch(url)
   .then(response => response.json())
   .then(person => person.films)
@@ -45,14 +61,32 @@ const filmsFetch = (url) => fetch(url)
             .then(() => console.log(data))
         )}
       ))
-  // .then(() => console.log(data))
-  // .catch(err => err, "this stopped because");
+  .then(() => console.log(data))
+  .catch(err => err, "this stopped because");
 
-characterFetch(url)
+let fileContents = ''
+
+const SetData = (data) =>{
+  console.log(data);
+  const name = data.splice(0,1)
+  const planet = data.splice(0,1)
+  console.log(data, 73)
+  const films = data.join(', ')
+  // console.log(films)
+fileContents = `My name is ${name} and I am from ${planet}.
+I starred in the following films: ${films}`
+}
+
+const masterFunc = new Promise (characterFetch(url))
   .then(() => planetFetch(url))
   .then(() => filmsFetch(url))
+  .then((cb) => makeFilms(cb))
+  // .then(() => console.log(data))
+  .then(() => SetData(data))
+  .then(() => console.log(fileContents))
 
 
+masterFunc(url);
 
 // fetch('https://swapi.dev/api/people/1')
 //   .then(response => response.json())
