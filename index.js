@@ -1,3 +1,4 @@
+const { promises } = require('fs');
 const fetch = require('node-fetch');
 
 const fs = require('fs').promises;
@@ -23,7 +24,14 @@ const fetchNPush = (url) => fetch(url)
   .then(response => response.json())
   .then(object => object.name)
   .then(name => data.push(name))
-  // .then(() => console.log(data))
+  .then(() => console.log(data))
+  // const fetchNPush = new Promise((resolve,) => (
+  // resolve((url) => fetch(url)
+  // .then(response => response.json())
+  // .then(object => object.name)
+  // .then(name => data.push(name))
+  // ))
+
 
 const characterFetch = (url) => fetchNPush(url)
 
@@ -42,12 +50,13 @@ let filmFetch = (film) => {
   fetch(film)
   .then(film => film.json())
   .then(film => data.push(film.title))
+  .then(() => console.log(data))
 }
 
 const filmsFetch = (url) => fetch(url)
   .then(response => response.json())
   .then(person => person.films)
-  .then(person => console.log(person, '50'))
+  // .then(person => console.log(person, '50'))
   .then(filmsArray => filmsArray.forEach(film => {
     filmFetch(film)
   }));
@@ -98,20 +107,28 @@ I starred in the following films: ${films}`
 //   // .then(() => console.log(data))
 //   .then(() => SetData(data))
 //   .then(() => console.log(fileContents))
+// declare new promise
+
+
 
 const masterFunc = (url) => {
-  characterFetch(url)
+  return new Promise ((resolve, reject) => {
+    characterFetch(url)
   .then(() => planetFetch(url))
   .then(() => filmsFetch(url))
   // .then((cb) => makeFilms(cb))
   // .then(() => console.log(data))
-  .then(() => SetData(data))
+  .then(() => console.log(data))
+  .then(setTimeout(() => SetData(data), 6000))
   .then(() => console.log(fileContents))
+  // .then(everything => resolve (everything))
+  })
+  // console.log(fileContents);
 }
 
 
 masterFunc(url);
-
+// setTimeout(() => console.log(fileContents), 5000);
 // fetch('https://swapi.dev/api/people/1')
 //   .then(response => response.json())
 //   .then(person =>)
